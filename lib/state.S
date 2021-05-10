@@ -1,7 +1,7 @@
 #include<sys/regdef.h>
 
-#define STATE_0 48
-#define STATE_1 49
+#define _STATE0 48
+#define _STATE1 49
 
 #define _SP 16
 #define _RA 12
@@ -29,7 +29,7 @@ proximo:
 
 create_stack:
 
-    addi sp,sp,-16
+    subu sp,sp,_SP
     sw ra,_RA(sp)
     sw gp,_GP(sp)
     sw fp,_FP(sp)
@@ -43,39 +43,39 @@ save_arguments:
     sw a2,_A3(sp)
     sw a3,_A4(sp)
     lw t5,_A5(sp)
-    j cell
+    j cell_address
 
-cell:
+cell_address:
 
-    addi t0,a1,-1
+    subu t0,a1,1
     mul t0,t0,t5
-    addi t1,a2,-1
+    subu t1,a2,1
     add t0,t0,t1
-    add t0root,a0,t0
-    j check_overflow
+    add t0,a0,t0
+    j cell_on_border
 
-check_overflow:
+cell_on_border:
 
-    beq t1,zero,first_cell
+    beq t1,zero,left_border
     subu t2,a2,t5
-    beq t2,zero,last_cell
-    j medium_cell
+    beq t2,zero,right_border
+    j inner_cell
 
-first_cell:
+left_border:
 
     addi t2,t0,1
     addi t1,t5,-1
     add t1,t0,t1
     j neighbours
 
-last_cell:
+right_border:
 
     addi t1,t0,-1
     addi t2,t5,-1
     subu t2,t0,t2
     j neighbours
 
-medium_cell:
+inner_cell:
 
     addi t1,t0,-1
     addi t2,t0,1
@@ -92,27 +92,30 @@ next_state:
 
     add t9,t0,t1
     add t9,t9,t2
-    addi t9,t9,-1
+    subu t9,t9,_STATE1
+    subu t9,t9,_STATE0
+    subu t9,t9,_STATE0
     beq t9,zero,state_1
     bltz t9,state_0
+    addi t8,zero,_STATE0
     beq t1,zero,state_1
     j state_0
 
 state_0:
 
-    addi v0,zero,48
+    addi v0,zero,_STATE0
     j finish
 
 state_1:
 
-    addi v0,zero,49
+    addi v0,zero,_STATE1
     j finish
 
 finish:
 
-    lw ra,12(sp)
-    lw gp,8(sp)
-    lw fp,4(fp)
+    lw ra,_RA(sp)
+    lw gp,_GP(sp)
+    lw fp,_FP(fp)
     addi sp,sp,16
     jr ra
 
