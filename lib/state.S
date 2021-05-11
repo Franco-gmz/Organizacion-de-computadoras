@@ -1,8 +1,5 @@
 #include<sys/regdef.h>
 
-#define _STATE0 48
-#define _STATE1 49
-
 #define _SP 16
 #define _RA 12
 #define _GP 8
@@ -24,25 +21,19 @@
     .ent proximo
 
 proximo:
-    
-    j create_stack
-
-create_stack:
 
     subu sp,sp,_SP
     sw ra,_RA(sp)
     sw gp,_GP(sp)
     sw fp,_FP(sp)
     move fp,sp
-    j save_arguments
-
-save_arguments:
 
     sw a0,_A1(sp)
     sw a1,_A2(sp)
     sw a2,_A3(sp)
     sw a3,_A4(sp)
     lw t5,_A5(sp)
+
     j cell_address
 
 cell_address:
@@ -90,33 +81,23 @@ neighbours:
 
 next_state:
 
-    add t9,t0,t1
-    add t9,t9,t2
-    subu t9,t9,_STATE1
-    subu t9,t9,_STATE0
-    subu t9,t9,_STATE0
-    beq t9,zero,state_1
-    bltz t9,state_0
-    addi t8,zero,_STATE0
-    beq t1,t8,state_1
-    j state_0
-
-state_0:
-
-    addi v0,zero,_STATE0
-    j finish
-
-state_1:
-
-    addi v0,zero,_STATE1
-    j finish
+    addi t4,zero,1
+    and t1,t1,t4
+    sll t1,t1,2
+    and t0,t0,t4
+    sll t0,t0,1
+    and t2,t2,t4
+    or t6,t0,t1
+    or t6,t6,t2
+    srl v0,a3,t6
+    and v0,v0,t4
 
 finish:
-
+   
     lw ra,_RA(sp)
     lw gp,_GP(sp)
     lw fp,_FP(fp)
-    addi sp,sp,16
+    addi sp,sp,_SP
     jr ra
 
     .end proximo
