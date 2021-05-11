@@ -17,7 +17,7 @@
     .abicalls
     .text
     .align 2
-    .set reorder
+    .set noreorder
     .cpload t9
     .set reorder
     .globl proximo
@@ -98,7 +98,7 @@ next_state:
     beq t9,zero,state_1
     bltz t9,state_0
     addi t8,zero,_STATE0
-    beq t1,zero,state_1
+    beq t1,t8,state_1
     j state_0
 
 state_0:
