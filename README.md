@@ -1,6 +1,4 @@
 # Organizacion-de-computadoras
 (6620)
 
-Compilar:
-
-gcc -o main main.c ../lib/state.S
+Compilación de prueba: gcc -o rule30 rule30.c ../lib/state.S
