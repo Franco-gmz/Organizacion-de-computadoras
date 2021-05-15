@@ -32,7 +32,21 @@ unsigned char proximo(unsigned char* a,unsigned int i,unsigned int j,unsigned ch
 
 int main(int argc, char **argv){
 
-	char helpMessage[] = "Uso:\n\tautcel -h\n\tautcel -V\n\tautcel R N inputfile [-o outputprefix]\nOpciones\n\t-V,--version\t\tVer version de programa\n\t-h,--help\t\tImprime este mensaje.\n\t-o,--output\t\tPrefijo del archivo de salida.\n";
+	char helpMessage[] = "Uso:\n\
+\tautcel -h\n\
+\tautcel -V\n\
+\tautcel R N inputfile [-o outputprefix]\n\
+Opciones\n\
+\t-h,--help\t\tImprime este mensaje.\n\
+\t-V,--version\t\tDa la version del programa\n\
+\t-o\t\tPrefijo de los archivos de salida.\n\
+Ejemplos:\n\
+\tautcel 30 80 inicial -o evolucion\n\
+\tCalcula la evolucion del automata \"Regla 30\",\n\
+\ten un mundo unidimensional de 80 celdas, por 80 iteraciones. \n\
+\tEl archivo de salida se llamara evolucion.pbm.\n\
+\tSi no se da un prefijo para los archivos de salida,\n\
+\tEl prefijo sera el nombre del archivo de entrada.\n";
 	char versionMessage[] = "autcel V1.0\n";
 	FILE *outputFile;
 	char availableOptions[] = "Vho";
