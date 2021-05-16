@@ -19,6 +19,8 @@ int pbm_cmp(FILE* file_1, FILE* file_2);
 
 void run_test(struct dirent** files,int n,char* route);
 
+char* get_token(char* string,int n);
+
 int main(int argc, char* argv[]){
 
 	struct dirent** files;
@@ -74,7 +76,9 @@ void run_test(struct dirent** files, int n,char* route){
 				printf(RED"[ERROR]"RESET);
 				errors++;
 			}
-			printf(": %s - %s \n",files[i]->d_name,files[i+1]->d_name);
+			char* rule = get_token(files[i]->d_name,2);
+			char* dim = get_token(files[i]->d_name,3);
+			printf(": TEST Regla%s con matriz de %sx%s\n",rule,dim,dim);
 			sleep(1);
 		
 			free(name_1);
@@ -111,4 +115,19 @@ int file_select(const struct dirent* entry){
 		return 0;
 	}
 	else return 1;
+}
+
+char* get_token(char* string,int n){
+	char* cpy = malloc(strlen(string));
+	strcpy(cpy,string);
+	int i = 1;
+	char* token = strtok(cpy,"_");
+	while(i<n){
+	
+		token = strtok(NULL,"_");
+		i++;
+	}
+	free(cpy);
+	return token;
+	
 }
