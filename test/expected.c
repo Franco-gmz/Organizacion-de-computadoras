@@ -13,30 +13,29 @@ int main(int argc,char* argv[]){
 	FILE* input_file = fopen(input,"r");
 	FILE* output_file = fopen(output,"w");
 
-	unsigned char** output_cells = create_cells(n);
+	unsigned char* output_cells = create_cells(n);
 	
 	for(int i=0;i<n;i++){
 		unsigned char caracter = fgetc(input_file);
-		if(caracter == 48) output_cells[0][i] = 0;
-		else output_cells[0][i] = 1;
+		if(caracter == 48) output_cells[i] = 0;
+		else output_cells[i] = 1;
 	}
-
-	unsigned char* ptr = &output_cells[0][0];
 
 	for(int i=0;i<n-1;i++){
 		for(int j=0;j<n;j++){
-			output_cells[i+1][j] = proximo(ptr,i,j,rule,n);
+			output_cells[n*(i+1) + j] = proximo(output_cells,i,j,rule,n);
 		}
 	}
 
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
-			fputc(output_cells[i][j]+48,output_file);
+			fputc(output_cells[n*i + j]+48, output_file);
 		}
 		fputc('\n',output_file);
 	}
 
-	free_cells(output_cells,n);
+	print_cells(output_cells, n);
+	free(output_cells);
 	fclose(input_file);
 	fclose(output_file);
 	return 0;

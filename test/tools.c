@@ -2,12 +2,12 @@
 #include<stdlib.h>
 #include<string.h>
 
-void print_cells(unsigned char** cells, unsigned int n){
+void print_cells(unsigned char* cells, unsigned int n){
 
 	printf("\n\n");
 	for(int i=0;i<n;i++){
-		for(int j=0;j<n;j++){
-			printf("\t%u",cells[i][j]);
+		for(int j=i*n;j<i*n+n;j++){
+			printf("%u",cells[j]);
 		}
 		printf("\n");
 	}
@@ -15,19 +15,10 @@ void print_cells(unsigned char** cells, unsigned int n){
 	return;
 }
 
-unsigned char** create_cells(unsigned int n){
+unsigned char* create_cells(unsigned int n){
 
-	unsigned char** cells = malloc(sizeof(char*)*n);
-	for(int i=0;i<n;i++){
-		cells[i] = malloc(sizeof(char*)*n);
-	}
+	unsigned char *cells = malloc(sizeof(unsigned char)*n*n);
+
 	return cells;
 }
 
-void free_cells(unsigned char** cells, unsigned int n){
-	for(int i=0;i<n;i++){
-		free(cells[i]);
-	}
-	free(cells);
-	return;
-}
