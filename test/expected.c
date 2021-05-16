@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include"../lib/proximo.h"
 #include"./tools.h"
 
 int main(int argc,char* argv[]){
@@ -15,26 +14,12 @@ int main(int argc,char* argv[]){
 
 	unsigned char* output_cells = create_cells(n);
 	
-	for(int i=0;i<n;i++){
-		unsigned char caracter = fgetc(input_file);
-		if(caracter == 48) output_cells[i] = 0;
-		else output_cells[i] = 1;
-	}
+	read_initial_state(input_file, output_cells, n);
 
-	for(int i=0;i<n-1;i++){
-		for(int j=0;j<n;j++){
-			output_cells[n*(i+1) + j] = proximo(output_cells,i,j,rule,n);
-		}
-	}
+	compute_states(output_cells, rule, n);
 
-	for(int i=0;i<n;i++){
-		for(int j=0;j<n;j++){
-			fputc(output_cells[n*i + j]+48, output_file);
-		}
-		fputc('\n',output_file);
-	}
+	write_pbm_file(output_file, output_cells, n);
 
-	print_cells(output_cells, n);
 	free(output_cells);
 	fclose(input_file);
 	fclose(output_file);
