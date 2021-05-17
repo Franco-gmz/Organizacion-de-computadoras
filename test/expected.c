@@ -14,14 +14,21 @@ int main(int argc,char* argv[]){
 
 	unsigned char* output_cells = create_cells(n);
 	
-	read_initial_state(input_file, output_cells, n);
+	puts("Leyendo estado inicial...");
+	if(read_initial_state(input_file, output_cells, n) != 0) {
+		fprintf(stderr, "Error: el archivo %s no cumple con el formato\n", input);
+		return 1;
+	}
 
 	compute_states(output_cells, rule, n);
 
+	printf("Grabando %s\n", output);
 	write_pbm_file(output_file, output_cells, n);
 
 	free(output_cells);
 	fclose(input_file);
 	fclose(output_file);
+
+	puts("Listo");
 	return 0;
 }

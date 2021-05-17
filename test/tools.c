@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<ctype.h>
 #include"../lib/proximo.h"
 
 void print_cells(unsigned char* cells, unsigned int n){
@@ -34,13 +35,26 @@ void write_pbm_file(FILE* output_file, unsigned char* cells, unsigned int n){
 	}
 }
 
-void read_initial_state(FILE* input_file, unsigned char* output_cells, unsigned int n){
+int read_initial_state(FILE* input_file, unsigned char* output_cells, unsigned int n){
 
-	for(int j=0;j<n;j++){
-		unsigned char caracter = fgetc(input_file);
-		if(caracter == 48) output_cells[j] = 0;
-		else output_cells[j] = 1;
+	unsigned char caracter;
+	unsigned int j = 0;
+	while(isdigit(caracter = fgetc(input_file))){
+
+		if(caracter == '0')
+			output_cells[j] = 0;
+		else if(caracter == '1')
+			output_cells[j] = 1;
+		else 
+			return 1;
+		
+		j++;
 	}
+
+	if(j != n)
+		return 1;
+	
+	return 0;
 }
 
 void compute_states(unsigned char* output_cells, unsigned char rule, unsigned int n){
