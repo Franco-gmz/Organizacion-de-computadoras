@@ -7,7 +7,7 @@ int main(int argc,char* argv[]){
 	char* input = argv[3];
 	char* output = argv[4];
 	unsigned char rule = (unsigned char) atoi(argv[1]);
-	unsigned int n = atoi(argv[2]);
+	unsigned int n = (unsigned int) atoi(argv[2]);
 
 	FILE* input_file = fopen(input,"r");
 	FILE* output_file = fopen(output,"w");

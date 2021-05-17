@@ -7,8 +7,8 @@
 void print_cells(unsigned char* cells, unsigned int n){
 
 	printf("\n\n");
-	for(int i=0;i<n;i++){
-		for(int j=i*n;j<i*n+n;j++){
+	for(unsigned int i=0;i<n;i++){
+		for(unsigned int j=i*n;j<i*n+n;j++){
 			printf("%u",cells[j]);
 		}
 		printf("\n");
@@ -27,8 +27,8 @@ unsigned char* create_cells(unsigned int n){
 void write_pbm_file(FILE* output_file, unsigned char* cells, unsigned int n){
 
 	fprintf(output_file, "P1\n%d %d\n", n, n);
-	for(int i=0;i<n;i++){
-		for(int j=0;j<n;j++){
+	for(unsigned int i=0;i<n;i++){
+		for(unsigned int j=0;j<n;j++){
 			fputc(cells[n*i + j]+48, output_file);
 		}
 		fputc('\n',output_file);
@@ -59,8 +59,8 @@ int read_initial_state(FILE* input_file, unsigned char* output_cells, unsigned i
 
 void compute_states(unsigned char* output_cells, unsigned char rule, unsigned int n){
 
-	for(int i=0;i<n-1;i++){
-		for(int j=0;j<n;j++){
+	for(unsigned int i=0;i<n-1;i++){
+		for(unsigned int j=0;j<n;j++){
 			output_cells[n*(i+1) + j] = proximo(output_cells,i,j,rule,n);
 		}
 	}

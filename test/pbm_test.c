@@ -7,7 +7,6 @@
 #include<string.h>
 
 #define EQUALS 0
-
 #define RED "\x1B[31m"
 #define GREEN "\x1B[32m"
 #define RESET "\x1B[0m"
@@ -79,7 +78,7 @@ void run_test(struct dirent** files, int n,char* route){
 			char* rule = get_token(files[i]->d_name,2);
 			char* dim = get_token(files[i]->d_name,3);
 			printf(": TEST Regla%s con matriz de %sx%s\n",rule,dim,dim);
-			sleep(1);
+		
 		
 			free(name_1);
 			free(name_2);
@@ -100,8 +99,8 @@ int pbm_cmp(FILE* file_1, FILE* file_2){
 	char char_2;
 
 	while(!feof(file_1) && !feof(file_2)){
-		char_1 = fgetc(file_1);
-		char_2 = fgetc(file_2);
+		char_1 = (char)fgetc(file_1);
+		char_2 = (char)fgetc(file_2);
 		if(char_1 != char_2) return 1;
 	}
 
