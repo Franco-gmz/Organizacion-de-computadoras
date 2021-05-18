@@ -11,7 +11,6 @@
 #define GREEN "\x1B[32m"
 #define RESET "\x1B[0m"
 
-//Precondicion: todos los archivos en el directorio deben ser .pbm
 int file_select(const struct dirent* entry);
 
 int pbm_cmp(FILE* file_1, FILE* file_2);
@@ -46,7 +45,9 @@ void run_test(struct dirent** files, int n,char* route){
 	int passed = 0;
 	int errors = 0;
 	int not_open = 0;
-	printf("\n\nRunning test...  %d files\n\n",n);
+	printf("\n\nIniciando comparacion de archivos\n");
+	printf("Ruta: TP1/files/output/\n");
+	printf("%d archivos encontrados\n\n",n);
 	sleep(1);
 	for(int i=0;i<n;i=i+2){
 		char* name_1 = malloc(strlen(route)+strlen(files[i]->d_name));
@@ -56,28 +57,28 @@ void run_test(struct dirent** files, int n,char* route){
 		strcpy(name_2,route);
 		strcat(name_2,files[i+1]->d_name);
 		if(name_1 == NULL || name_2 == NULL){
-			printf(RED "\nError with malloc\n"RESET);
+			printf(RED "\nError (MALLOC) \n"RESET);
 			exit(-1);
 		}
 		FILE* file_1 = fopen(name_1,"r");
 		FILE* file_2 = fopen(name_2,"r");
 		
 		if(file_1==NULL || file_2==NULL){
-			printf(RED"Could not open files\n"RESET);
+			printf(RED"No se pudo abrir el archivo\n"RESET);
 			not_open++;
 		}
 		else{
 			if(pbm_cmp(file_1,file_2)== EQUALS){
-				printf(GREEN "[PASS]" RESET);
+				printf(GREEN "[ OK ]" RESET);
 				passed++;
 			}
 			else{
-				printf(RED"[ERROR]"RESET);
+				printf(RED"[ ERROR ]"RESET);
 				errors++;
 			}
 			char* rule = get_token(files[i]->d_name,2);
 			char* dim = get_token(files[i]->d_name,3);
-			printf(": TEST Regla%s con matriz de %sx%s\n",rule,dim,dim);
+			printf(": TEST Regla %s con matriz de %sx%s\n",rule,dim,dim);
 		
 		
 			free(name_1);
@@ -87,9 +88,9 @@ void run_test(struct dirent** files, int n,char* route){
 			if(file_2!=NULL) fclose(file_2);
 
 	}
-	printf(GREEN "\nPASSED:%d" RESET ,passed);
-	printf(RED "\tERRORS:%d" RESET,errors);
-	printf(RED "\tFILES NOT OPEN:%d\n\n"RESET,not_open);
+	printf(GREEN "\nOK:%d" RESET ,passed);
+	printf(RED "\tErrores:%d" RESET,errors);
+	printf(RED "\tArchivos no encontrados:%d\n\n"RESET,not_open);
 	return;
 }
 
