@@ -79,7 +79,7 @@ Ejemplos:\n\
 			case 'o':
 				no_output_prefix = 0;
 				if((*argv)[optind]=='\0' || argv[optind] == NULL){
-					printf("No se ingreso ningun nombre de archivo, uso default: \n");
+					printf("No se ingreso ningun nombre de archivo \n");
 					outputFile = "default";
 				}else if(strcmp(argv[optind],"-")==0){
 					printf("No se ingreso ningun nombre de archivo \n");
@@ -96,8 +96,9 @@ Ejemplos:\n\
 		}
 
 	}
-	if (argv[optind] == NULL || argv[optind + 1] == NULL) {
+	if (argv[optind] == NULL || argv[optind + 1] == NULL || argv[optind + 2] == NULL){
 		printf("Debe especificar R, N y el archivo de estado inicial\n");
+		printf("%s",helpMessage);
 		exit(EXIT_FAILURE);
 	}else{
 
