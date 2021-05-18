@@ -10,7 +10,16 @@
 int test(unsigned char rule, unsigned int n, char* input, char* output){
 
 	FILE* input_file = fopen(input,"r");
+	if(input_file == NULL) {
+		fprintf(stderr, "Error al abrir el archivo %s\n", input);
+		return 1;
+	}
 	FILE* output_file = fopen(output,"w");
+	if(output_file == NULL) {
+		fprintf(stderr, "Error al abrir el archivo %s\n", output);
+		fclose(input_file);
+		return 1;
+	}
 
 	unsigned char* output_cells = create_cells(n);
 	
@@ -55,7 +64,8 @@ Ejemplos:\n\
 	char* outputFile;
 	char availableOptions[] = "Vho";
 	int option;
-	
+	int no_output_prefix = 1;
+
 	while((option = getopt(argc,argv,availableOptions)) != -1){
 		switch(option){
 			case 'V':
@@ -67,7 +77,8 @@ Ejemplos:\n\
 				exit(EXIT_SUCCESS);
 				break;
 			case 'o':
-				if(*argv[optind]=='\0' || argv[optind] == NULL){
+				no_output_prefix = 0;
+				if((*argv)[optind]=='\0' || argv[optind] == NULL){
 					printf("No se ingreso ningun nombre de archivo, uso default: \n");
 					outputFile = "default";
 				}else if(strcmp(argv[optind],"-")==0){
@@ -93,8 +104,15 @@ Ejemplos:\n\
 		unsigned char rule = (unsigned char) atoi(argv[optind]);
 		unsigned int n = (unsigned int) atoi(argv[optind + 1]);	
 	    char* input = argv[optind +2];
-		
-		test(rule, n, input, outputFile);
+
+	    char output[strlen(no_output_prefix ? input : outputFile) + 5];
+	    if(no_output_prefix == 1) {
+	    	strcpy(output, input);
+	    }
+	   	else strcpy(output, outputFile);
+		strcat(output, ".pbm");
+
+		test(rule, n, input, output);
 	} 
 	return 0;
 }
