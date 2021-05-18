@@ -37,9 +37,9 @@ void write_pbm_file(FILE* output_file, unsigned char* cells, unsigned int n){
 
 int read_initial_state(FILE* input_file, unsigned char* output_cells, unsigned int n){
 
-	unsigned char caracter;
+	char caracter;
 	unsigned int j = 0;
-	while(isdigit(caracter = fgetc(input_file))){
+	while(isdigit(caracter = (char)fgetc(input_file))){
 
 		if(caracter == '0')
 			output_cells[j] = 0;

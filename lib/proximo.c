@@ -16,7 +16,7 @@ unsigned char proximo(unsigned char* a,unsigned int i,unsigned int j,unsigned ch
     else 
         right = *(a + N*i + j+1);  //input[i][j+1]
 
-    unsigned char indice = (left<<2)|(center<<1)|right; // 0 0 0 0 0 L C R
+    unsigned char indice = (unsigned char)((left<<2)|(center<<1)|right); // 0 0 0 0 0 L C R
     
     return (regla>>indice)&1;   //regla[indice]
 
