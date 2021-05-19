@@ -1,14 +1,14 @@
 #include<sys/regdef.h>
 
-#define _SP 16
-#define _GP 8
-#define _FP 4
+#define _SP 8
+#define _GP 4
+#define _FP 0
 
-#define _A1 16
-#define _A2 20
-#define _A3 24
-#define _A4 28
-#define _A5 32
+#define _A1 8
+#define _A2 12
+#define _A3 16
+#define _A4 20
+#define _A5 24
 
     .abicalls
     .text
