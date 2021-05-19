@@ -80,15 +80,12 @@ neighbours:
 
 next_state:
 
-    addi t4,zero,1
-    and t1,t1,t4
     sll t1,t1,2
-    and t0,t0,t4
     sll t0,t0,1
-    and t2,t2,t4
     or t6,t0,t1
     or t6,t6,t2
     srl v0,a3,t6
+    addi t4,zero,1
     and v0,v0,t4
 
 finish:
