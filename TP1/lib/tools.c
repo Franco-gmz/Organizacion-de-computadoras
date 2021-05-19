@@ -51,7 +51,7 @@ int read_initial_state(FILE* input_file, unsigned char* output_cells, unsigned i
 		j++;
 	}
 
-	if(j != n)
+	if(j != n || j == 0)
 		return 1;
 	
 	return 0;
