@@ -35,5 +35,5 @@
 ./../bin/autcel\
 	245 50 ../files/input/input_50.txt -o ../files/output/out_245_50_s
 
-./..bin/autcel\
+./../bin/autcel\
 	210 50 ../files/input/input_50.txt -o ../files/output/out_210_50_s

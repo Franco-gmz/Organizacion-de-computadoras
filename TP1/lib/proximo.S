@@ -1,7 +1,6 @@
 #include<sys/regdef.h>
 
 #define _SP 16
-#define _RA 12
 #define _GP 8
 #define _FP 4
 
@@ -24,7 +23,6 @@ proximo:
 
     /*STACKFRAME*/	
     subu sp,sp,_SP
-    sw ra,_RA(sp)
     sw gp,_GP(sp)
     sw fp,_FP(sp)
     move fp,sp
@@ -95,7 +93,6 @@ next_state:
 
 finish:
    
-    lw ra,_RA(sp)
     lw gp,_GP(sp)
     lw fp,_FP(fp)
     addi sp,sp,_SP
