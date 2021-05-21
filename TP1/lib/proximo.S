@@ -73,9 +73,9 @@ inner_cell:
 
 neighbours:
 
-    lb t0,0(t0)
-    lb t1,0(t1)
-    lb t2,0(t2)
+    lbu t0,0(t0)
+    lbu t1,0(t1)
+    lbu t2,0(t2)
     j next_state
 
 next_state:
