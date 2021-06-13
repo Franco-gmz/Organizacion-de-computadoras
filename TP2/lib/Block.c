@@ -21,9 +21,14 @@ void free_block(Block block){
 void write_byte(Block block,int byte, char data){
 
 	block.data[byte] = data;
+	block.valid = 1;
 }
 
 char* read_byte(Block block,int byte){
 
 	return &(block.data[byte]);
+}
+
+char* read_block(Block block){
+	return (block.data);
 }
