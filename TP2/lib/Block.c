@@ -17,3 +17,13 @@ void free_block(Block block){
 
 	free(block.data);
 }
+
+void write_byte(Block block,int byte, char data){
+
+	block.data[byte] = data;
+}
+
+char* read_byte(Block block,int byte){
+
+	return &(block.data[byte]);
+}
