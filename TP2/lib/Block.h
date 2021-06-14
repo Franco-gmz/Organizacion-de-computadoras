@@ -9,14 +9,16 @@ typedef struct{
 
 }Block;
 
-extern Block new_block(int size);
+extern Block* new_block(int size);
 
-extern void free_block(Block block);
+extern void free_block(Block* block);
 
-extern void write_byte(Block block,int byte, char data);
+extern void write_byte(Block* block,int byte, char data);
 
-extern char* read_byte(Block block,int byte);
+extern char* read_byte(Block* block,int byte);
 
-extern char* read_block(Block block);
+extern char* read_block(Block* block);
+
+extern  void write_block(Block* block,char* data);
 
 #endif
