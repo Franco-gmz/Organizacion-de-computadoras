@@ -1,6 +1,10 @@
 #include"../../lib/Set.h"
 
-int testWRByte
+int testWRBlocks(int block_size, int set_size){
+
+	Set* set = new_set(set_size,block_size);
+	
+}
 
 
 int main(){
