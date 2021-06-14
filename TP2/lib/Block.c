@@ -1,12 +1,11 @@
 #include"Block.h"
 #include<stdlib.h>
 
-Block new_block(int size, char* tag){
+Block new_block(int size){
 	
 	Block block;
 
 	block.size = size;
-	block.tag = tag;
 	block.valid = 0;
 	block.data = (char*) malloc(size);
 
@@ -16,12 +15,15 @@ Block new_block(int size, char* tag){
 void free_block(Block block){
 
 	free(block.data);
+	return;
 }
 
 void write_byte(Block block,int byte, char data){
 
 	block.data[byte] = data;
 	block.valid = 1;
+
+	return;
 }
 
 char* read_byte(Block block,int byte){

@@ -5,9 +5,8 @@ int main(){
 
 
 	int size = 6;
-	char* tag = "1234";
 	char data[6] = {'B','l','o','q','u','e'};
-	Block block = new_block(size,tag);
+	Block block = new_block(size);
 
 	for(int i = 0; i<size; i++){
 		write_byte(block,i,data[i]);
