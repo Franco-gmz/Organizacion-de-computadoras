@@ -23,15 +23,15 @@ int init_set(Set* set, int ways, int block_size){
 
 void move_first_to_last(Set* set) {
 
-	if(set == NULL || set->first_next == NULL)
+	if(set == NULL || set->first->next == NULL)
 		return;
 
-	Block* block = Set->first;
+	Block* block = set->first;
 
-	Set->first = block->next;
+	set->first = block->next;
 	block->next = NULL;
-	Set->last->next = block;
-	Set->last = block;
+	set->last->next = block;
+	set->last = block;
 }
 
 Block* find_block(Set* set, int tag) {
@@ -39,7 +39,7 @@ Block* find_block(Set* set, int tag) {
 	if(set == NULL)
 		return NULL;
 
-	Block* current = Set->first;
+	Block* current = set->first;
 	while(current != NULL) {
 		if(current->valid != 0 && current->tag == tag)
 			return current; //hit
@@ -51,7 +51,7 @@ Block* find_block(Set* set, int tag) {
 
 
 void free_set(Set* set){
-
+	
 	while(set->first != NULL) {
 		Block* next = set->first->next;
 		free_block(set->first);

@@ -17,30 +17,6 @@ Block* new_block(int size){
 
 void free_block(Block* block){
 
-	free(block->data);
 	free(block);
-	return;
-}
-
-void write_byte(Block* block, int offset, char data){
-
-	(block->data)[offset] = data;
-	block->valid = 1;
-
-	return;
-}
-
-char read_byte(Block* block, int offset){
-
-	return (block->data)[offset];
-}
-
-char* read_block(Block* block){
-	return (block->data);
-}
-
-void write_block(Block* block, char* data){
-
-	*(block->data) = *data;
 	return;
 }
