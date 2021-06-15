@@ -5,14 +5,11 @@
 
 typedef struct{
 	
-	int block_number;
-	int block_size;
-	Block** blocks;
-	int tag;
-
+	Block* first;
+	Block* last;
 }Set;
 
-extern Set* new_set(int blocks, int block_size);
+extern int init_set(Set* set, int ways, int block_size);
 
 extern void free_set(Set* set);
 

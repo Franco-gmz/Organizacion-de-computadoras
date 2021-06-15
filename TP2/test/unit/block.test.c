@@ -3,15 +3,15 @@
 
 int testWRByte(int block_size,char* data){
 
-	Block* block = new_block(block_size);
+	Block* block = new_block(block_size); 
 	int result = 0;
 	for(int i = 0; i<block_size; i++){
 		write_byte(block,i,data[i]);
 	}
 
 	for(int i = 0; i<block_size; i++){
-		char* data_read = read_byte(block,i);
-		if(*data_read != data[i]) result = -1;
+		char data_read = read_byte(block,i);
+		if(data_read != data[i]) result = -1;
 	}
 	free_block(block);
 	return result;

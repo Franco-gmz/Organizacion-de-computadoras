@@ -2,35 +2,59 @@
 #include"Set.h"
 #include<stdlib.h>
 
-Set* new_set(int blocks, int block_size){
+int init_set(Set* set, int ways, int block_size){
 
-	Set* ptr;
-	Set set;
-
-	set.block_number = blocks;
-	set.block_size = block_size;
-	set.blocks = malloc(blocks);
-	for(int i = 0; i<blocks; i++){
+	set->first = NULL;
+	set->last = NULL;
+	for(int i=0; i<ways; i++) {
 		Block* block = new_block(block_size);
-		set.blocks[i] = block;
+		if(block == NULL) {
+			free_set(set);
+			return 1;
+		}
+		if (i == 0) 
+			set->last = block;
+		block->next = set->first;
+		set->first = block;
 	}
-	ptr = &set;
-	return ptr;
+	
+	return 0;
 }
+
+void move_first_to_last(Set* set) {
+
+	if(set == NULL || set->first_next == NULL)
+		return;
+
+	Block* block = Set->first;
+
+	Set->first = block->next;
+	block->next = NULL;
+	Set->last->next = block;
+	Set->last = block;
+}
+
+Block* find_block(Set* set, int tag) {
+
+	if(set == NULL)
+		return NULL;
+
+	Block* current = Set->first;
+	while(current != NULL) {
+		if(current->valid != 0 && current->tag == tag)
+			return current; //hit
+	}
+
+	return NULL; //miss
+}
+
+
 
 void free_set(Set* set){
 
-	for(int i = 0; i<set->block_number;i++){
-		Block* block = (set->blocks)[i];
-		free_block(block);
+	while(set->first != NULL) {
+		Block* next = set->first->next;
+		free_block(set->first);
+		set->first = next;
 	}
-
-	return;
-}
-
-int tag_cmp(Set set, int tag){
-
-	int match = 1;
-	if(set.tag == tag) match = 0;
-	return match;
 }
