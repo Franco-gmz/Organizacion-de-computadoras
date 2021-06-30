@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<string.h>
 #include"../../lib/Block.h"
 
 int testWRByte(int block_size,char* data){
@@ -32,9 +33,9 @@ int testWRBlock(int block_size,char* data){
 	Block* block = new_block(block_size);
 	int result = 0;
 	printf("Escribiendo bloque...\n");
-	block->data = data;
+	memcpy(block->data, data, block_size);
 	char* read_data = block->data;
-	if(read_data != data){
+	if(memcmp(read_data, data, block_size) != 0){
 		result = -1;
 	}
 	else printf("Lectura del bloque correcta\n");

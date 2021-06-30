@@ -12,21 +12,21 @@ int compare_data(char* a, char* b, int size){
 //blocks: cantidad de bloques en data (solo sirve para el test)
 void testWRBlocks(int ways, int block_size, char* data,int blocks){
 	int result = 0;
-	Set* set;
+	Set set;
 	printf("\nCreando Conjunto de tamaño %dB\n",ways*block_size);
-	init_set(set, ways, block_size);
+	init_set(&set, ways, block_size);
 
 	for(int i=0; i<blocks;i++){
 		//uso el valor de i como tag
 		printf("Escribiendo bloque#%d...\n",i+1);
-		write_block(set,i,block_size,data+i*block_size);
+		write_block(&set,i,block_size,data+i*block_size);
 	}
 	int misses_expected = blocks-ways;
 	if(ways >= blocks) misses_expected = 0;
 
 	for(int j=0; j<blocks;j++){
 		printf("Leyendo bloque#%d...\t",j+1);
-		char* cached_data =  read_block(set,j);
+		char* cached_data =  read_block(&set,j);
 		if(j<misses_expected && cached_data == NULL){
 			printf("Miss de lectura esperado - OK\n");
 		}
@@ -40,6 +40,8 @@ void testWRBlocks(int ways, int block_size, char* data,int blocks){
 	}
 	if(result == -1) printf("Resultado: Fallo\n\n");
 	else printf("Resultado: OK\n\n");
+
+	free_set(&set);
 	return;
 
 }

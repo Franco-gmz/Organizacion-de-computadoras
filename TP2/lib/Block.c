@@ -17,6 +17,7 @@ Block* new_block(int size){
 
 void free_block(Block* block){
 
+	free(block->data);
 	free(block);
 	return;
 }

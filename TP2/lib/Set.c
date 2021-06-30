@@ -1,6 +1,7 @@
 #include"Block.h"
 #include"Set.h"
 #include<stdlib.h>
+#include<string.h>
 #include<stdio.h>
 
 int init_set(Set* set, int ways, int block_size){
@@ -56,14 +57,14 @@ void write_block(Set* set, int tag, int block_size, char* data){
 	Block* block = find_block(set, tag);
 	/* Si hay un hit: */
 	if(block != NULL) {
-		block->data = data;
+		memcpy(block->data, data, block_size);
 		return;
 	}
 
 	/* Si hay un miss: */
 	Block* first = set->first;
 	first->tag = tag;
-	first->data = data;
+	memcpy(first->data, data, block_size);
 	first->valid = 1;
 	move_first_to_last(set);
 	return;

@@ -12,7 +12,7 @@ extern int sets; //cachesize/(blocksize*ways)
 void init();
 unsigned int find_set(int address);
 unsigned int find_earliest(int setnum);
-void read_block(int blocknum);
+//void read_block(int blocknum);
 void write_byte_tomem(int address, char *hit);
 char read_byte(int address, char *hit);
 char write_byte(int address, char value, char *hit);
