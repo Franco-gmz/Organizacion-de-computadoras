@@ -52,15 +52,20 @@ Block* find_block(Set* set, int tag) {
 }
 
 void write_block(Set* set, int tag, int block_size, char* data){
+	
+	Block* block = find_block(set, tag);
+	/* Si hay un hit: */
+	if(block != NULL) {
+		block->data = data;
+		return;
+	}
+
+	/* Si hay un miss: */
 	Block* first = set->first;
-	Block* block = new_block(block_size);
-	block->tag = tag;
-	block->data = data;
-	block->valid = 1;
-	block->next = first->next; //para que coincide con el funcionamiento del move
-	set->first = block;
+	first->tag = tag;
+	first->data = data;
+	first->valid = 1;
 	move_first_to_last(set);
-	free_block(first);
 	return;
 }
 
