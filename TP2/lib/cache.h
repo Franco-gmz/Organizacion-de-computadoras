@@ -1,18 +1,19 @@
 #ifndef __CACHE__
 #define __CACHE__
 
-#include "Set.h"
+#include "Block.h"
 
-extern Set* cache;
+extern Block* cache;
 extern int cachesize;
 extern int blocksize;
 extern int ways;
 extern int sets; //cachesize/(blocksize*ways)
+extern int blocks;
 
 void init();
 unsigned int find_set(int address);
 unsigned int find_earliest(int setnum);
-//void read_block(int blocknum);
+void read_block(int blocknum);
 void write_byte_tomem(int address, char *hit);
 char read_byte(int address, char *hit);
 char write_byte(int address, char value, char *hit);

@@ -4,15 +4,13 @@
 typedef struct block Block;
 struct block{
 	
-	int size;
 	int tag;
 	int valid;
+	unsigned long long time;
 	char* data;
-	Block* next;
-
 };
 
-extern Block* new_block(int size);
+extern void init_block(Block* block, int size);
 
 extern void free_block(Block* block);
 

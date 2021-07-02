@@ -5,17 +5,17 @@
 
 void init(){
 	
-	cache = malloc(sets*sizeof(Set));
+	cache = malloc(blocks*sizeof(Block));
 
 	for(int i = 0; i<sets; i++){
-		init_set(cache+i,ways,blocksize);
+		init_block(cache+i,blocksize);
 	}
 	return;
 }
 
 void free_cache(){
 	for(int i = 0; i<sets; i++){
-		free_set(cache+i);
+		free_block(cache+i);
 	}
 	free(cache);
 	return;
@@ -29,3 +29,23 @@ unsigned int find_set(int address) {
 
 	return ((unsigned int)address >> offset_bits) & index_mask;
 }
+
+unsigned int find_earliest(int setnum) {
+
+	Block* set = cache + setnum*ways;
+	int min = 0;
+	int i = 0;
+	for(; i<ways; i++) {			// Encontramos el primer valido
+		if(set[i].valid == 1) {
+			min = i;
+			break;
+		}
+	}
+	for(; i<ways; i++) {			// Vemos si hay uno con menor tiempo
+		if(set[i].valid == 1 && set[i].time < set[min].time) {
+			min = i;
+		}
+	}
+	return min;	
+}
+
