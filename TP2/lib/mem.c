@@ -20,8 +20,8 @@ void write_block_to_mem(int blocknum,char* data){
 	return;
 }
 
-void write_byte_to_mem(int blocknum,int offset, char* data){
-	memcpy((mem+blocknum*blocksize)+offset, data, 1);
+void write_byte_to_mem(int address, char* data){
+	memcpy(mem+address, data, 1);
 	return;
 }
 
