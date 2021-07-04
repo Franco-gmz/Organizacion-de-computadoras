@@ -77,7 +77,7 @@ void read_block(int blocknum) {
 
 	memcpy(cache[cache_blocknum].data, block_data, blocksize);
 	cache[cache_blocknum].valid = 1;
-	cache[cache_blocknum].time = time;
+	cache[cache_blocknum].time = ++time;
 	cache[cache_blocknum].tag = find_tag(block_address);
 	return;
 }

@@ -153,17 +153,17 @@ void test_read_byte(){
 	int misses = 0;
 	int err = 0;
 	int errWR = 0;
-	char* hit = malloc(1);
+	char hit = 0;
 	int set_counter = 0;
 	for(int i=memsize; i>0; i--){
 
 		if(i%blocksize == 0) set_counter++;
-		char data = read_byte(i-1,hit);
+		char data = read_byte(i-1,&hit);
 
 		//Deberian ser hits porque fueron los ultimos en cargar
-		if(set_counter < sets && *hit != 1) err++;
-		if(*hit == 1 && data != (char)(i-1)%256) errWR++;
-		if(*hit == 0) misses++;
+		if(set_counter < sets && hit != 1) err++;
+		if(hit == 1 && data != (char)(i-1)%256) errWR++;
+		if(hit == 0) misses++;
 	}
 	/*printf("\tError de lectura/escritura:%d\n",errWR);
 	printf("\tErrores de carga:%d\n",err);
@@ -171,7 +171,6 @@ void test_read_byte(){
 	printf("\tMisses:%d - Misses esperados:%d\n",misses,misses_expected);*/
 	if(err > 0 || errWR > 0) printf("error en test_read_byte");
 	else printf("read_byte OK\n");
-	free(hit);
 	return;
 }
 
