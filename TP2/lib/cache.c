@@ -144,9 +144,9 @@ char read_byte(int address, char *hit){
 	return data[offset];
 }
 
-char write_byte(int address, char value, char* hit){
+char write_byte(int address, char value){
 	count_access();
-	*hit = 0;
+	char hit = 0;
 	int tag = find_tag(address);
 	int setnum = find_set(address);
 	int offset = find_offset(address);
@@ -154,15 +154,15 @@ char write_byte(int address, char value, char* hit){
 	Block* set = (cache + setnum*ways);
 	for(int i=0; i<ways; i++){
 		if( (set+i)->valid == 1 && (set+i)->tag == tag ){
-			memcpy((((set+i)->data)+offset),&value,1);
-			*hit = 1;
+			(set+i)->data[offset] = value;
+			hit = 1;
 		}
 	}
-	if(*hit == 0) count_miss();
+	if(hit == 0) count_miss();
 	write_byte_tomem(address,value);
-	return *hit;
+	return hit;
 }
 
 char get_miss_rate(){
-	return (char)misses/accesses; //me lo redondea a 0
+	return (char)(misses*100/accesses); //me lo redondea a 0
 }

@@ -167,7 +167,7 @@ void test_read_byte(){
 
 	int misses_expected = (memsize/blocksize) - sets*ways;
 	int accesses_expected = memsize;
-	float mr_expected = (float)misses_expected/accesses_expected;
+	char mr_expected = (char)(misses_expected*100/accesses_expected);
 
 	for(int i=memsize; i>0; i--){
 		
@@ -176,10 +176,9 @@ void test_read_byte(){
 		if(data != data_expected) err++;		
 	}
 
-	char mr = get_miss_rate(); //ARREGLAR -> si lo muestro es 0
-	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\t",accesses,accesses_expected,misses,misses_expected);
+	char mr = get_miss_rate();
+	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\tMiss rate: %d/%d\n\t",accesses,accesses_expected,misses,misses_expected,mr, mr_expected);
 	printf("Errores lectura/escritura: %d\n\n",err);
-	return;
 }
 
 void load_mem(){
@@ -187,7 +186,6 @@ void load_mem(){
 	for(int i=0; i<memsize; i++){
 		write_byte_tomem(i,(char)i%256);
 	}
-	return;
 }
 
 void load_cache(){
@@ -195,13 +193,11 @@ void load_cache(){
 	for(int i=0; i<(memsize/blocksize);i++){
 		read_block(i);
 	}
-	return;
 }
 
 void reset_mr(){
 	accesses = 0;
 	misses = 0;
-	return;
 }
 
 void test_write_byte(){
@@ -217,12 +213,15 @@ void test_write_byte(){
 	//No Allocate
 	int misses_expected = memsize - sets*ways*blocksize;
 	int accesses_expected = memsize;
+	char mr_expected = (char)(misses_expected*100/accesses_expected);
+
 
 	for(int i=memsize; i>0; i--){
-		write_byte(i-1,value,&hit);
+		write_byte(i-1,value);
 	}
 
-	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\t",accesses,accesses_expected,misses,misses_expected);
+	char mr = get_miss_rate();
+
+	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\tMiss rate: %d/%d\n\t",accesses,accesses_expected,misses,misses_expected,mr, mr_expected);
 	printf("Errores lectura/escritura: %d\n\n",err);
-	return;
 }
