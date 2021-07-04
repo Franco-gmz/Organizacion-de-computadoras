@@ -164,5 +164,5 @@ char write_byte(int address, char value, char* hit){
 }
 
 char get_miss_rate(){
-	return (char)misses/accesses;
+	return (char)misses/accesses; //me lo redondea a 0
 }
