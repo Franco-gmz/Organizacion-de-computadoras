@@ -23,6 +23,16 @@ void free_cache(){
 	return;
 }
 
+void count_access(){
+	accesses++;
+	return;
+}
+
+void count_miss(){
+	misses++;
+	return;
+}
+
 unsigned int find_set(int address) {
 
 	unsigned int offset_bits = ceil(log2(blocksize));
@@ -116,13 +126,14 @@ Debe retornar el valor correspondiente a la posición de memoria address,
 buscándolo primero en el caché, y escribir 1 en *hit si es un hit y 0 si es un miss.
 */
 char read_byte(int address, char *hit){
-	
+	count_access();
 	int setnum = (int) find_set(address);
 	int offset = find_offset(address);
 	int tag = find_tag(address);
 	char* data = find_by_tag(setnum,tag);
 	//miss
 	if(data == NULL){
+		count_miss();
 		*hit = 0;
 		int blocknum = address_to_blocknum(address);
 		read_block(blocknum);//lo guarda en cache
@@ -134,7 +145,7 @@ char read_byte(int address, char *hit){
 }
 
 char write_byte(int address, char value, char* hit){
-
+	count_access();
 	*hit = 0;
 	int tag = find_tag(address);
 	int setnum = find_set(address);
@@ -147,7 +158,11 @@ char write_byte(int address, char value, char* hit){
 			*hit = 1;
 		}
 	}
-
+	if(*hit == 0) count_miss();
 	write_byte_tomem(address,value);
 	return *hit;
+}
+
+char get_miss_rate(){
+	return (char)misses/accesses;
 }

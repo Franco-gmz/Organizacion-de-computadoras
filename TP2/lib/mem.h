@@ -12,6 +12,6 @@ void free_mem();
 char* read_block_from_mem(int blocknum);
 void write_block_to_mem(int blocknum,char* data);
 void write_byte_to_mem(int address, char* data);
-
+char read_byte_from_mem(int address);
 
 #endif

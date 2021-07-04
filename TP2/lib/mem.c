@@ -28,3 +28,7 @@ void write_byte_to_mem(int address, char* data){
 char* read_block_from_mem(int blocknum){
 	return (mem+blocknum*blocksize);
 }
+
+char read_byte_from_mem(int address){
+	return mem[address];
+}

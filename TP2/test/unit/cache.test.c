@@ -14,6 +14,8 @@ int memsize;
 Block* cache;
 char* mem;
 unsigned long long time;
+int accesses;
+int misses;
 
 void test_find_set();
 void test_find_earliest();
@@ -22,9 +24,12 @@ void test_read_byte();
 void load_mem();
 void load_cache();
 void test_write_byte();
+void reset_mr();
 
 int main(int argc, char* argv[]){
 
+	accesses = 0;
+	misses = 0;
 	ways = 4;
 	cachesize = 1024;
 	blocksize = 32;
@@ -36,10 +41,10 @@ int main(int argc, char* argv[]){
 	init_mem();
 
 	test_read_byte();
-	test_write_byte();
+	/*test_write_byte();
 	test_find_set();
 	test_find_earliest();
-	test_read_block();
+	test_read_block();*/
 
 	free_cache();
 	free_mem();
@@ -148,29 +153,28 @@ void test_read_block() {
 }
 
 void test_read_byte(){
+	printf("Test read byte\n");
 	load_mem();
 	load_cache();
-	int misses = 0;
+	reset_mr();
+
 	int err = 0;
-	int errWR = 0;
 	char hit = 0;
-	int set_counter = 0;
+
+	int misses_expected = (memsize/blocksize) - sets*ways;
+	int accesses_expected = memsize;
+	float mr_expected = (float)misses_expected/accesses_expected;
+
 	for(int i=memsize; i>0; i--){
-
-		if(i%blocksize == 0) set_counter++;
+		
 		char data = read_byte(i-1,&hit);
-
-		//Deberian ser hits porque fueron los ultimos en cargar
-		if(set_counter < sets && hit != 1) err++;
-		if(hit == 1 && data != (char)(i-1)%256) errWR++;
-		if(hit == 0) misses++;
+		char data_expected = read_byte_from_mem(i-1);
+		if(data != data_expected) err++;		
 	}
-	/*printf("\tError de lectura/escritura:%d\n",errWR);
-	printf("\tErrores de carga:%d\n",err);
-	int misses_expected = (memsize/blocksize)-sets*ways;
-	printf("\tMisses:%d - Misses esperados:%d\n",misses,misses_expected);*/
-	if(err > 0 || errWR > 0) printf("error en test_read_byte");
-	else printf("read_byte OK\n");
+
+	char mr = get_miss_rate(); //ARREGLAR -> si lo muestro es 0
+	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\t",accesses,accesses_expected,misses,misses_expected);
+	printf("Errores lectura/escritura: %d\n\n",err);
 	return;
 }
 
@@ -187,6 +191,12 @@ void load_cache(){
 	for(int i=0; i<(memsize/blocksize);i++){
 		read_block(i);
 	}
+	return;
+}
+
+void reset_mr(){
+	accesses = 0;
+	misses = 0;
 	return;
 }
 
@@ -210,4 +220,5 @@ void test_write_byte(){
 		if(err > 0 || errWR > 0) printf("error en test_read_byte");
 		else printf("write_byte OK\n");
 		return;
-	}}
+	}
+}
