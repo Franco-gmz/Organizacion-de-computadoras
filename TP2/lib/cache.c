@@ -61,6 +61,13 @@ unsigned int find_earliest(int setnum) {
 	return min;	
 }
 
+int find_tag(int address){
+	unsigned int offset_bits = ceil(log2(blocksize));
+	unsigned int index_bits = ceil(log2(sets));
+	int tag = (int)( (unsigned int)address >> (offset_bits+index_bits) );
+	return tag;
+}
+
 void read_block(int blocknum) {
 	char* block_data = read_block_from_mem(blocknum);
 	unsigned int block_address = blocknum*blocksize;
@@ -71,7 +78,8 @@ void read_block(int blocknum) {
 	memcpy(cache[cache_blocknum].data, block_data, blocksize);
 	cache[cache_blocknum].valid = 1;
 	cache[cache_blocknum].time = time;
-	// FALTA ACTUALIZAR TAG
+	cache[cache_blocknum].tag = find_tag(block_address);
+	return;
 }
 
 void write_byte_tomem(int address, char value) {
@@ -79,3 +87,48 @@ void write_byte_tomem(int address, char value) {
 	write_byte_to_mem(address, &value);
 }
 
+/////////////////////////////////////////////////////////////////
+
+int find_offset(int address){
+	int offset_bits = ceil(log2(blocksize));
+	int offset_mask = pow(2, offset_bits)-1;
+	return (address & offset_mask);
+}
+
+
+char* find_by_tag(int setnum, int tag){
+	Block* set = cache + setnum*ways;
+	char* data = NULL;
+	for(int i=0;i<ways;i++){
+		if( (set+i)->valid == 1 && (set+i)->tag == tag ) data = (set+i)->data;
+	}
+	return data;
+}
+
+int address_to_blocknum(int address){
+	unsigned int offset_bits = ceil(log2(blocksize));
+	int blocknum = (int) ( (unsigned int)address >> offset_bits);
+	return blocknum;
+}
+
+/*
+Debe retornar el valor correspondiente a la posición de memoria address, 
+buscándolo primero en el caché, y escribir 1 en *hit si es un hit y 0 si es un miss.
+*/
+char read_byte(int address, char *hit){
+	
+	int setnum = (int) find_set(address);
+	int offset = find_offset(address);
+	int tag = find_tag(address);
+	char* data = find_by_tag(setnum,tag);
+	//miss
+	if(data == NULL){
+		*hit = 0;
+		int blocknum = address_to_blocknum(address);
+		read_block(blocknum);//lo guarda en cache
+		data = find_by_tag(setnum,tag);
+	}
+	else *hit = 1;
+	//No deberia nunca ser data NULL
+	return data[offset];
+}
