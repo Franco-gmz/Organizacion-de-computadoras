@@ -28,6 +28,7 @@ void reset_mr();
 
 int main(int argc, char* argv[]){
 
+
 	accesses = 0;
 	misses = 0;
 	ways = 4;
@@ -37,6 +38,9 @@ int main(int argc, char* argv[]){
 	blocks = cachesize/blocksize;
 	memsize = 4096;
 	time = 0;
+	printf("\n__________________________________________\n\n");
+	printf("Mem. principal:%dB\nMemoria cache %dWSA - %dB - Bloque:%dB\n",memsize,ways,cachesize,blocksize);
+	printf("__________________________________________\n\n");
 	init();
 	init_mem();
 
