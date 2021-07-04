@@ -132,3 +132,22 @@ char read_byte(int address, char *hit){
 	//No deberia nunca ser data NULL
 	return data[offset];
 }
+
+char write_byte(int address, char value, char* hit){
+
+	*hit = 0;
+	int tag = find_tag(address);
+	int setnum = find_set(address);
+	int offset = find_offset(address);
+
+	Block* set = (cache + setnum*ways);
+	for(int i=0; i<ways; i++){
+		if( (set+i)->valid == 1 && (set+i)->tag == tag ){
+			memcpy((((set+i)->data)+offset),&value,1);
+			*hit = 1;
+		}
+	}
+
+	write_byte_tomem(address,value);
+	return *hit;
+}

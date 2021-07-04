@@ -21,6 +21,7 @@ void test_read_block();
 void test_read_byte();
 void load_mem();
 void load_cache();
+void test_write_byte();
 
 int main(int argc, char* argv[]){
 
@@ -34,10 +35,8 @@ int main(int argc, char* argv[]){
 	init();
 	init_mem();
 
-	load_mem();
-	load_cache();
 	test_read_byte();
-
+	test_write_byte();
 	test_find_set();
 	test_find_earliest();
 	test_read_block();
@@ -149,7 +148,8 @@ void test_read_block() {
 }
 
 void test_read_byte(){
-	
+	load_mem();
+	load_cache();
 	int misses = 0;
 	int err = 0;
 	int errWR = 0;
@@ -189,3 +189,25 @@ void load_cache(){
 	}
 	return;
 }
+
+void test_write_byte(){
+	load_mem();
+	load_cache();
+	int misses = 0;
+	int err = 0;
+	int errWR = 0;
+	char hit = 0;
+	int set_counter = 0;
+	for(int i=memsize; i>0; i--){
+
+		if(i%blocksize == 0) set_counter++;
+		char data = read_byte(i-1,&hit);
+
+		//Deberian ser hits porque fueron los ultimos en cargar
+		if(set_counter < sets && hit != 1) err++;
+		if(hit == 1 && data != (char)(i-1)%256) errWR++;
+		if(hit == 0) misses++;
+		if(err > 0 || errWR > 0) printf("error en test_read_byte");
+		else printf("write_byte OK\n");
+		return;
+	}}
