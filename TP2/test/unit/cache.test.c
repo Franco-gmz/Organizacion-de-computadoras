@@ -21,9 +21,10 @@ void test_find_set();
 void test_find_earliest();
 void test_read_block();
 void test_read_byte();
+void test_write_cache_empty();
+void test_write_byte();
 void load_mem();
 void load_cache();
-void test_write_byte();
 void reset_mr();
 
 int main(int argc, char* argv[]){
@@ -41,9 +42,11 @@ int main(int argc, char* argv[]){
 	printf("\n__________________________________________\n\n");
 	printf("Mem. principal:%dB\nMemoria cache %dWSA - %dB - Bloque:%dB\n",memsize,ways,cachesize,blocksize);
 	printf("__________________________________________\n\n");
+	
 	init();
 	init_mem();
 
+	test_write_cache_empty();
 	test_read_byte();
 	test_write_byte();
 	test_find_set();
@@ -224,4 +227,20 @@ void test_write_byte(){
 
 	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\tMiss rate: %d/%d\n\t",accesses,accesses_expected,misses,misses_expected,mr, mr_expected);
 	printf("Errores lectura/escritura: %d\n\n",err);
+}
+
+void test_write_cache_empty(){
+
+	printf("Test write byte in empty cache\n");
+	reset_mr(); //Aseguro el correcto conteo
+
+	int misses_expected = memsize;
+	int accesses_expected = memsize;
+	char mr_expected = (char)(misses_expected*100/accesses_expected);
+	for(int i=memsize; i>0; i--){
+		write_byte(i-1,(char)i%256);
+	}
+	char mr = get_miss_rate();
+	printf("\tAccesos a memoria: %d/%d\n\tMisses: %d/%d\n\tMiss rate: %d/%d\n\n",accesses,accesses_expected,misses,misses_expected,mr, mr_expected);
+	return;
 }
