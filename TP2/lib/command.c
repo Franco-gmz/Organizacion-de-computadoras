@@ -30,7 +30,6 @@ int execute_command(char* cmd, FILE* output_file) {
 
 void execute_init_command() {
 	free_cache();
-	free_mem();
 	init();
 	init_mem();
 }

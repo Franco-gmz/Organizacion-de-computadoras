@@ -5,6 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 
+int accesses;
+int misses;
+Block* cache;
+unsigned long long time;
+
+
 void init(){
 	
 	cache = malloc(blocks*sizeof(Block));
@@ -94,7 +100,7 @@ void read_block(int blocknum) {
 
 void write_byte_tomem(int address, char value) {
 
-	write_byte_to_mem(address, &value);
+	write_byte_to_mem(address, value);
 }
 
 /////////////////////////////////////////////////////////////////

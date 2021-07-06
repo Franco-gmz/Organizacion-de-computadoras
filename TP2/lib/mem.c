@@ -1,28 +1,20 @@
 #include"mem.h"
-#include"Block.h"
 #include<stdlib.h>
 #include<string.h>
 #include<stdio.h>
 
+char mem[MEMSIZE];
+
 void init_mem(){
-
-	mem = calloc(memsize, 1);
-	return;
-}
-
-void free_mem(){
-	free(mem);
-	return;
+	memset(mem, 0, MEMSIZE);
 }
 
 void write_block_to_mem(int blocknum,char* data){
 	memcpy((mem+blocknum*blocksize), data, blocksize);
-	return;
 }
 
-void write_byte_to_mem(int address, char* data){
-	memcpy(mem+address, data, 1);
-	return;
+void write_byte_to_mem(int address, char data){
+	mem[address] = data;
 }
 
 char* read_block_from_mem(int blocknum){

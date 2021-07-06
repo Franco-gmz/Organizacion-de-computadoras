@@ -16,12 +16,6 @@ int blocksize;
 int cachesize;
 int sets;
 int blocks;
-int memsize; 
-Block* cache;
-char* mem;
-unsigned long long time;
-int accesses;
-int misses;
 
 void parse_options(int argc, char **argv, char** input_file_name, char** output_file_name);
 
@@ -51,7 +45,6 @@ int main(int argc, char **argv){
 
 	sets = cachesize/(blocksize*ways);
 	blocks = cachesize/blocksize;
-	memsize = 64*1024;
 
 	init();
 	init_mem();
@@ -65,10 +58,9 @@ int main(int argc, char **argv){
 	}
 	
 	free_cache();
-	free_mem();
 
 	fclose(input_file);
-	if(output_file != stdin) {
+	if(output_file != stdout) {
 		fclose(output_file);
 	}
 

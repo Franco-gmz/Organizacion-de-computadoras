@@ -3,15 +3,11 @@
 
 #include "Block.h"
 
-extern Block* cache;
 extern int cachesize;
 extern int blocksize;
 extern int ways;
 extern int sets; //cachesize/(blocksize*ways)
 extern int blocks;
-extern unsigned long long time;
-extern int accesses;
-extern int misses;
 
 void init();
 unsigned int find_set(int address);
