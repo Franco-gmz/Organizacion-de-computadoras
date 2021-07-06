@@ -42,6 +42,8 @@ int execute_read_command(char* cmd, FILE* output_file) {
 	if(cmd[1] != ' ' || !isdigit(cmd[2]))
 		return 1;
 	int address = atoi(cmd+2);
+	if(address >= MEMSIZE)
+		return 1;
 	char hit = 0;
 	char byte = read_byte(address, &hit);
 	fprintf(output_file, "%d\n", byte);
@@ -62,7 +64,7 @@ int execute_write_command(char* cmd, FILE* output_file) {
 		return 1;
 
 	int address = atoi(cmd+2);
-	if(address > 64*1024-1)
+	if(address >= MEMSIZE)
 		return 1;
 
 	int value = atoi(cmd+i+2);
