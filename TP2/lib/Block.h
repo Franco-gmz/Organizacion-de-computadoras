@@ -10,8 +10,11 @@ struct block{
 	char* data;
 };
 
+/* Inicializa un bloque de cache de tamaño size, reservando
+memoria para los datos y configurando la metadata*/
 extern void init_block(Block* block, int size);
 
+/* Libera la memoria reservada para los datos del bloque */
 extern void free_block(Block* block);
 
 #endif

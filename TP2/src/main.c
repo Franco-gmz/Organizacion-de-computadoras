@@ -26,6 +26,11 @@ int main(int argc, char **argv){
 
 	parse_options(argc, argv, &input_file_name, &output_file_name);
 
+	if(blocksize <= 0 || cachesize <= 0 || ways <= 0 || blocksize > cachesize) {
+		fprintf(stderr, "Parametros invalidos\n");
+		return 1;
+	}
+
 	FILE* input_file = fopen(input_file_name,"r");
 	if(input_file == NULL) {
 		fprintf(stderr, "Error al abrir el archivo %s\n", input_file_name);

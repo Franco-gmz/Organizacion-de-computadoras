@@ -1,5 +1,6 @@
 #include "cache.h"
 #include "mem.h"
+#include "Block.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,6 +11,43 @@ int misses;
 Block* cache;
 unsigned long long time;
 
+static void count_access(){
+	accesses++;
+}
+
+static void count_miss(){
+	misses++;
+}
+
+static int find_offset(int address){
+	int offset_bits = ceil(log2(blocksize));
+	int offset_mask = pow(2, offset_bits)-1;
+	return (address & offset_mask);
+}
+
+static int find_tag(int address){
+	unsigned int offset_bits = ceil(log2(blocksize));
+	unsigned int index_bits = ceil(log2(sets));
+	int tag = (int)( (unsigned int)address >> (offset_bits+index_bits) );
+	return tag;
+}
+
+
+static char* find_by_tag(int setnum, int tag){
+	Block* set = cache + setnum*ways;
+	char* data = NULL;
+	for(int i=0;i<ways;i++){
+		if( (set+i)->valid == 1 && (set+i)->tag == tag ) data = (set+i)->data;
+	}
+	return data;
+}
+
+static int address_to_blocknum(int address){
+	unsigned int offset_bits = ceil(log2(blocksize));
+	int blocknum = (int) ( (unsigned int)address >> offset_bits);
+	return blocknum;
+}
+
 
 void init(){
 	
@@ -18,7 +56,10 @@ void init(){
 	for(int i = 0; i<blocks; i++){
 		init_block(cache+i,blocksize);
 	}
-	return;
+
+	accesses = 0;
+	misses = 0;
+	time = 0;
 }
 
 void free_cache(){
@@ -26,18 +67,8 @@ void free_cache(){
 		free_block(cache+i);
 	}
 	free(cache);
-	return;
 }
 
-void count_access(){
-	accesses++;
-	return;
-}
-
-void count_miss(){
-	misses++;
-	return;
-}
 
 unsigned int find_set(int address) {
 
@@ -77,13 +108,6 @@ unsigned int find_earliest(int setnum) {
 	return min;	
 }
 
-int find_tag(int address){
-	unsigned int offset_bits = ceil(log2(blocksize));
-	unsigned int index_bits = ceil(log2(sets));
-	int tag = (int)( (unsigned int)address >> (offset_bits+index_bits) );
-	return tag;
-}
-
 void read_block(int blocknum) {
 	char* block_data = read_block_from_mem(blocknum);
 	unsigned int block_address = blocknum*blocksize;
@@ -103,34 +127,7 @@ void write_byte_tomem(int address, char value) {
 	write_byte_to_mem(address, value);
 }
 
-/////////////////////////////////////////////////////////////////
 
-int find_offset(int address){
-	int offset_bits = ceil(log2(blocksize));
-	int offset_mask = pow(2, offset_bits)-1;
-	return (address & offset_mask);
-}
-
-
-char* find_by_tag(int setnum, int tag){
-	Block* set = cache + setnum*ways;
-	char* data = NULL;
-	for(int i=0;i<ways;i++){
-		if( (set+i)->valid == 1 && (set+i)->tag == tag ) data = (set+i)->data;
-	}
-	return data;
-}
-
-int address_to_blocknum(int address){
-	unsigned int offset_bits = ceil(log2(blocksize));
-	int blocknum = (int) ( (unsigned int)address >> offset_bits);
-	return blocknum;
-}
-
-/*
-Debe retornar el valor correspondiente a la posición de memoria address, 
-buscándolo primero en el caché, y escribir 1 en *hit si es un hit y 0 si es un miss.
-*/
 char read_byte(int address, char *hit){
 	count_access();
 	int setnum = (int) find_set(address);
@@ -146,7 +143,6 @@ char read_byte(int address, char *hit){
 		data = find_by_tag(setnum,tag);
 	}
 	else *hit = 1;
-	//No deberia nunca ser data NULL
 	return data[offset];
 }
 
@@ -172,5 +168,5 @@ char write_byte(int address, char value){
 char get_miss_rate(){
 	if(accesses == 0)
 		return 0;
-	return (char)(misses*100/accesses); //me lo redondea a 0
+	return (char)(misses*100/accesses);
 }
