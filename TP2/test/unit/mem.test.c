@@ -37,16 +37,16 @@ void test_WR_blocks(int blocks){
 void test_WR_byte(int blocks){
 
 	printf("\nTEST: Escritura/Lectura de bytes de la memoria principal\n");
-	char* data = "Z";
+	char data = 'Z';
 	int errors = 0;
 	printf("Escribiendo memoria...\n");
 	for(int i=0; i<blocks; i++){
-		write_byte_to_mem(i,0,data);
+		write_byte_to_mem(i*blocksize,data);
 	}
 	printf("Leyendo memoria...\n");
 	for(int i=0; i<blocks; i++){
 
-		if(datacmp(read_block_from_mem(i),data,1) != 0) errors = errors + 1;
+		if(datacmp(read_block_from_mem(i),&data,1) != 0) errors = errors + 1;
 	}
 	printf("Se encontraron %d errores\n\n",errors);
 
@@ -61,7 +61,6 @@ int main(){
 	init_mem();
 	test_WR_blocks(blocks);
 	test_WR_byte(blocks);
-	free_mem();
 	return 0;
 
 }

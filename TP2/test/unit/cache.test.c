@@ -56,7 +56,6 @@ int main(int argc, char* argv[]){
 	test_read_block();
 
 	free_cache();
-	free_mem();
 
 	return 0;
 }
