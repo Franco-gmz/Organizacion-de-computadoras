@@ -6,7 +6,7 @@
 
 void init_mem(){
 
-	mem = malloc(memsize);
+	mem = calloc(memsize, 1);
 	return;
 }
 

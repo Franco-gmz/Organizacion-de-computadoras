@@ -164,5 +164,7 @@ char write_byte(int address, char value){
 }
 
 char get_miss_rate(){
+	if(accesses == 0)
+		return 0;
 	return (char)(misses*100/accesses); //me lo redondea a 0
 }
