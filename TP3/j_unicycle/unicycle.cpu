@@ -29,7 +29,7 @@
 		"ForkReg":    {"type": "Fork", "x": 335, "y": 281, "size": 32, "in": "In", "out": ["Out1", "Out2"]},
 		"DataMem":    {"type": "DataMemory", "latency": 400, "x": 480, "y": 242, "size": 100, "address": "Address", "write_data": "WriteData", "out": "ReadData", "mem_read": "MemRead", "mem_write": "MemWrite"},
 		"MuxMem":     {"type": "Multiplexer", "latency": 15, "x": 580, "y": 270, "size": 32, "sel": "MemToReg", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects the result of the ALU or the value read from memory to write to the destination register (WriteData).", "pt": "Selecciona o resultado da ALU ou o valor lido da memória para escrever no registo de destino (WriteData)."}},
-		"MuxJumpReg":    {"type": "Multiplexer", "latency": 15, "x": 550, "y": 18, "size": 32, "sel": "JumpReg", "in": ["0", "1"], "out": "Out", "desc": {"default": "Selects, in conjunction with the previous multiplexer, PC+4/branch address or the jump address as the new PC.", "pt": "Selecciona, em conjunto com o multiplexador anterior, o PC+4/endereço de branch ou o endereço de salto como novo PC."}}
+		"MuxJumpReg":    {"type": "Multiplexer", "latency": 15, "x": 550, "y": 18, "size": 32, "sel": "JumpReg", "in": ["0", "1"], "out": "Out"}
 
 	},
 	"wires": [
